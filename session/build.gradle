@@ -33,21 +33,5 @@ dependencies {
     implementation 'com.android.support:support-annotations:27.1.0'
 }
 
-// 上传到jcenter
-// 用命令：gradlew clean build bintrayUpload -PbintrayUser=BINTRAY_USERNAME -PbintrayKey=BINTRAY_KEY -PdryRun=false
-apply plugin: 'bintray-release'
-publish {
-    artifactId = 'session'
-    description = 'android session manager'
-    version = '1.0.0'
-    userOrg = 'raee'
-    repoName = 'Android'
-    groupId = 'com.rae.swift'
-    website = 'https://github.com/raee/AndroidSessionManager'
-}
-
-// javadoc 不上传
-tasks.withType(Javadoc) {
-    options.encoding = "UTF-8"
-    options.addStringOption('Xdoclint:none', '-quiet')
-}
+apply plugin: 'com.github.dcendents.android-maven'
+group='com.github.raee'
