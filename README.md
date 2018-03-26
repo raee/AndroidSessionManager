@@ -1,0 +1,2 @@
+# AndroidSessionManager
+Android session manager
