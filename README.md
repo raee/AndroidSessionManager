@@ -1,3 +1,6 @@
+
+[![](https://jitpack.io/v/raee/AndroidSessionManager.svg)](https://jitpack.io/#raee/AndroidSessionManager)
+
 相信大家都知道，每一个App都需要登录，登录信息都保存在本地文件中，然后我们就写一堆的操作SharedPreferences的代码了。
 
 现在，你可以完全抛弃这种方法，一句代码搞定登录信息，用户信息管理。实现全局操作。为你的程序解耦。
@@ -33,17 +36,21 @@
     }
 ```
 
-引用库：
-```groovy
-compile 'com.rae.swift:rae-library:1.0.1'
-```
-如果下载失败，请在`根目录` `build.gradle`添加：
+# 使用
+
+1、Add it in your root `build.gradle` at the end of repositories:
+
 ```groovy
 allprojects {
-    repositories {
-        maven { url "https://dl.bintray.com/raee/Android" }
-    }
+		repositories {
+			 maven { url 'https://jitpack.io' }
+		}
 }
+```
+2、Add the dependency
+
+```groovy
+compile 'com.github.raee:AndroidSessionManager:1.0.0'
 ```
 # 一、设计
 
