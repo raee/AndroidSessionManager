@@ -1,5 +1,5 @@
 apply plugin: 'com.android.library'
-apply plugin: 'maven-publish'
+//apply plugin: 'maven-publish'
 // apply plugin: 'com.github.dcendents.android-maven'
 
 android {
@@ -30,33 +30,34 @@ dependencies {
     implementation 'com.android.support:support-annotations:28.0.0'
 }
 
-//打包源码
-task sourceJar(type: Jar) {
-    from android.sourceSets.main.java.srcDirs
-    classifier "sources"
-}
-publishing {
-    publications {
-        maven(MavenPublication) {
-            //  以下组合成gradle的库：com.github.raedev:session:1.0.2
+
+
+
+uploadArchives {
+    apply plugin: 'maven'
+    Properties properties = new Properties()
+    properties.load(project.rootProject.file('local.properties').newInputStream())
+    def userName = properties.getProperty('maven.user')
+    def password = properties.getProperty('maven.password')
+    def mavenUrl = properties.getProperty('maven.url')
+
+    repositories.mavenDeployer {
+        repository(url: mavenUrl) {
+            authentication(userName: userName, password: password)
+        }
+        pom.project {
             groupId 'com.github.raedev'
             artifactId 'session'
-            version '1.0.2'
-            artifact(sourceJar)
+            version '1.0.0'
+            packaging 'aar'
         }
     }
-    repositories {
-        // 读取local.properties配置文件信息
-        Properties properties = new Properties()
-        properties.load(project.rootProject.file('local.properties').newDataInputStream())
-        maven {
-            //指定要上传的maven私服仓库
-            url = properties.getProperty('maven.url')
-            //认证用户和密码
-            credentials {
-                username properties.getProperty('maven.user')
-                password properties.getProperty('maven.password')
-            }
-        }
+
+    task androidSourcesJar(type: Jar) {
+        classifier = 'sources'
+        from android.sourceSets.main.java.sourceFiles
+    }
+    artifacts {
+        archives androidSourcesJar
     }
 }
