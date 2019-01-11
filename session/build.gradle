@@ -1,18 +1,15 @@
 apply plugin: 'com.android.library'
+apply plugin: 'maven-publish'
+// apply plugin: 'com.github.dcendents.android-maven'
 
 android {
-    compileSdkVersion 26
-
-
-
+    compileSdkVersion 28
     defaultConfig {
         minSdkVersion 14
-        targetSdkVersion 26
+        targetSdkVersion 28
         versionCode 1
         versionName "1.0"
-
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
-
     }
 
     buildTypes {
@@ -27,11 +24,39 @@ android {
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     testImplementation 'junit:junit:4.12'
-    androidTestImplementation 'com.android.support.test:runner:1.0.1'
-    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
-    implementation 'com.google.code.gson:gson:2.8.0'
-    implementation 'com.android.support:support-annotations:27.1.0'
+    androidTestImplementation 'com.android.support.test:runner:1.0.2'
+    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
+    implementation 'com.google.code.gson:gson:2.8.2'
+    implementation 'com.android.support:support-annotations:28.0.0'
 }
 
-apply plugin: 'com.github.dcendents.android-maven'
-group='com.github.raee'
+//打包源码
+task sourceJar(type: Jar) {
+    from android.sourceSets.main.java.srcDirs
+    classifier "sources"
+}
+publishing {
+    publications {
+        maven(MavenPublication) {
+            //  以下组合成gradle的库：com.github.raedev:session:1.0.2
+            groupId 'com.github.raedev'
+            artifactId 'session'
+            version '1.0.2'
+            artifact(sourceJar)
+        }
+    }
+    repositories {
+        // 读取local.properties配置文件信息
+        Properties properties = new Properties()
+        properties.load(project.rootProject.file('local.properties').newDataInputStream())
+        maven {
+            //指定要上传的maven私服仓库
+            url = properties.getProperty('maven.url')
+            //认证用户和密码
+            credentials {
+                username properties.getProperty('maven.user')
+                password properties.getProperty('maven.password')
+            }
+        }
+    }
+}

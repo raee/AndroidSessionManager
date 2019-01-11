@@ -39,6 +39,11 @@ public abstract class SessionManager {
             return this;
         }
 
+        public Builder name(String name) {
+            mConfig.setConfigName(name);
+            return this;
+        }
+
         public Builder withContext(Application applicationContext) {
             mConfig.setApplication(applicationContext);
             return this;
@@ -49,9 +54,9 @@ public abstract class SessionManager {
         }
     }
 
-    private static SessionConfig sConfig;
-    private static WeakReference<SessionManager> managerWeakReference;
-    private final List<SessionStateChangedListener> mSessionStateChangedListeners = new ArrayList<>();
+    protected static SessionConfig sConfig;
+    protected static WeakReference<SessionManager> managerWeakReference;
+    protected final List<SessionStateChangedListener> mSessionStateChangedListeners = new ArrayList<>();
 
     /**
      * 获取默认的会话管理器，默认的为cookie 管理器。
@@ -86,7 +91,7 @@ public abstract class SessionManager {
     }
 
 
-    SessionManager() {
+    protected SessionManager() {
     }
 
     /**

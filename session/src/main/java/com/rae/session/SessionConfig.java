@@ -13,6 +13,7 @@ public class SessionConfig {
     private Class<?> userTokenClass;
     private Class<?> userClass;
     private WeakReference<Application> mApplication;
+    private String configName;
 
     public Class<?> getUserTokenClass() {
         return userTokenClass;
@@ -28,6 +29,14 @@ public class SessionConfig {
 
     public void setUserClass(Class<?> userClass) {
         this.userClass = userClass;
+    }
+
+    public String getConfigName() {
+        return configName;
+    }
+
+    public void setConfigName(String configName) {
+        this.configName = configName;
     }
 
     @Nullable

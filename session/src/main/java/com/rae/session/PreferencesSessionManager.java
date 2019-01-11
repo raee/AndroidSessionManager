@@ -18,19 +18,22 @@ import com.google.gson.Gson;
  */
 public class PreferencesSessionManager extends SessionManager {
 
-    private final SessionConfig mConfig;
-    private final Gson mGson = new Gson();
-    private SharedPreferences mSharedPreferences;
+    protected final SessionConfig mConfig;
+    protected final Gson mGson = new Gson();
+    protected SharedPreferences mSharedPreferences;
 
     // 用户信息获取比较频繁，作为一个字段去维护
-    private Object mUserInfo;
+    protected Object mUserInfo;
 
     public PreferencesSessionManager(SessionConfig config) {
         mConfig = config;
         Application context = config.getApplication();
         if (context == null)
             throw new NullPointerException("默认使用的SessionManger为偏好，请初始化Context");
-        mSharedPreferences = context.getSharedPreferences(context.getPackageName() + ".session", Context.MODE_PRIVATE);
+        String configName = config.getConfigName();
+        if (TextUtils.isEmpty(configName))
+            configName = context.getPackageName() + ".session";
+        mSharedPreferences = context.getSharedPreferences(configName, Context.MODE_PRIVATE);
     }
 
     @Override
